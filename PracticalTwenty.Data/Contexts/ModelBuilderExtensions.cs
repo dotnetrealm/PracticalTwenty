@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using PracticalTwenty.Data.DTO;
 using PracticalTwenty.Data.Models;
-using System.Security.AccessControl;
-using System;
 
 namespace PracticalSeventeen.Data.Models
 {

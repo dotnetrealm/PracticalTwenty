@@ -1,14 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PracticalSeventeen.Data.Models;
 using PracticalTwenty.Data.DTO;
 using PracticalTwenty.Data.Models;
-using System.Reflection.Metadata;
+using System.Text.Json;
 
 namespace PracticalTwenty.Data.Contexts
 {
     public class ApplicationDBContext : DbContext
     {
-        public ApplicationDBContext(DbContextOptions options) : base(options) { }
+        public ILogger<ApplicationDBContext> _logger; 
+        public ApplicationDBContext(DbContextOptions options, ILogger<ApplicationDBContext> logger) : base(options) {
+            _logger = logger;
+        }
 
         public DbSet<User> Users { get; set; }
 
@@ -66,9 +70,11 @@ namespace PracticalTwenty.Data.Contexts
                             break;
                     }
                 }
+                
             }
             foreach (var auditEntry in auditEntries)
             {
+                _logger.LogInformation(JsonSerializer.Serialize(auditEntry));
                 AuditLogs.Add(auditEntry.ToAudit());
             }
         }

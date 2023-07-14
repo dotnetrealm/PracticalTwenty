@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PracticalTwenty.Commons;
 using PracticalTwenty.Models;
 using System.Diagnostics;
 
 namespace PracticalTwenty.Controllers
 {
+    [LogMethod]
     public class ErrorController : Controller
     {
 

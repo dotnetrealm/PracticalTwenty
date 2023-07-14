@@ -1,26 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PracticalTwenty.Commons;
 using PracticalTwenty.Data.Interfaces;
 using PracticalTwenty.Data.Models;
-using ILogger = Serilog.ILogger;
 
 namespace PracticalTwenty.Controllers
 {
+    [LogMethod]
     public class UserController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        readonly ILogger _logger;
-        public UserController(IUnitOfWork unitOfWork, ILogger logger)
+
+        public UserController(IUnitOfWork unitOfWork, ILogger<UserController> logger)
         {
-            _logger = logger;
             _unitOfWork = unitOfWork;
         }
 
         public async Task<IActionResult> IndexAsync()
         {
-            for (int i = 0; i < 100; i++)
-            {
-                _logger.Information("Serilog loop {@loopcount}", i);
-            }
             var users = await _unitOfWork.Users.GetAll();
             return View(users);
         }

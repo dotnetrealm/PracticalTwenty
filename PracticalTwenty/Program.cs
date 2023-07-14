@@ -16,28 +16,26 @@ builder.Services.AddDbContext<ApplicationDBContext>(opt =>
 
 //configure service files
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IApplicationLogRepository, ApplicationLogRepository>();
 
+//Configure Serilog 
+builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
-//serilog configurations
-builder.Host.UseSerilog((context, config) =>
-{
-    config.ReadFrom.Configuration(context.Configuration);
-});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+//Use Serilog
 app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
-app.UseStatusCodePagesWithReExecute("Error/PageNotFound");
+app.UseStatusCodePagesWithReExecute("/Error/PageNotFound");
 app.UseStaticFiles();
-
 
 app.UseRouting();
 
@@ -47,16 +45,4 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=User}/{action=Index}/{id?}");
 
-try
-{
-    Log.Information("Application starting up");
-    app.Run();
-}
-catch
-{
-    Log.Fatal("Application failed to start.");
-}
-finally
-{
-    Log.CloseAndFlush();
-}
+app.Run();
