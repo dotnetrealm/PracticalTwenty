@@ -16,7 +16,7 @@ namespace PracticalTwenty.Data.Repositories
 
         public async Task CompleteAsync()
         {
-            await _db.SaveChangesAsync();
+            await _db.SaveChangesAsync("Admin");
         }
 
         public void Dispose()

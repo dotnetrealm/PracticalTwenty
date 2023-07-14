@@ -4,17 +4,14 @@
     ViewData["Title"] = "User Management";
 }
 
-<h1>User Management System</h1>
+<h1 class="text-center my-5">User Management System</h1>
 
 <p>
     <a asp-action="Create" class="btn btn-primary">Create New User</a>
 </p>
-<table class="table">
+<table class="table text-center">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Firstname)
             </th>
@@ -31,9 +28,6 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Firstname)
                 </td>

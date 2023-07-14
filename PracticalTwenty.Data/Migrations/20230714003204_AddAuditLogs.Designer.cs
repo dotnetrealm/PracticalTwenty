@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PracticalTwenty.Data.Contexts;
 
@@ -11,9 +12,11 @@ using PracticalTwenty.Data.Contexts;
 namespace PracticalTwenty.Data.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230714003204_AddAuditLogs")]
+    partial class AddAuditLogs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,63 +24,6 @@ namespace PracticalTwenty.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("PracticalTwenty.Data.Models.ApplicationLog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ActionName")
-                        .IsRequired()
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("Area")
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("ControllerName")
-                        .IsRequired()
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("IpAddress")
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("IsFirstLogin")
-                        .HasColumnType("char(1)");
-
-                    b.Property<string>("LangId")
-                        .HasColumnType("varchar(2)");
-
-                    b.Property<DateTime>("LoggedInAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("LoggedOutAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LoginStatus")
-                        .HasColumnType("char(1)");
-
-                    b.Property<string>("PageAccessed")
-                        .HasColumnType("varchar(500)");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("varchar(2)");
-
-                    b.Property<string>("SessionId")
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("UrlReferrer")
-                        .HasColumnType("varchar(500)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(10)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ApplicationLogs");
-                });
 
             modelBuilder.Entity("PracticalTwenty.Data.Models.Audit", b =>
                 {
