@@ -22,63 +22,6 @@ namespace PracticalTwenty.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("PracticalTwenty.Data.Models.ApplicationLog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ActionName")
-                        .IsRequired()
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("Area")
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("ControllerName")
-                        .IsRequired()
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("IpAddress")
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("IsFirstLogin")
-                        .HasColumnType("char(1)");
-
-                    b.Property<string>("LangId")
-                        .HasColumnType("varchar(2)");
-
-                    b.Property<DateTime>("LoggedInAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("LoggedOutAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LoginStatus")
-                        .HasColumnType("char(1)");
-
-                    b.Property<string>("PageAccessed")
-                        .HasColumnType("varchar(500)");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("varchar(2)");
-
-                    b.Property<string>("SessionId")
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("UrlReferrer")
-                        .HasColumnType("varchar(500)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(10)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ApplicationLogs");
-                });
-
             modelBuilder.Entity("PracticalTwenty.Data.Models.Audit", b =>
                 {
                     b.Property<int>("Id")
@@ -113,7 +56,7 @@ namespace PracticalTwenty.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AuditLogs");
+                    b.ToTable("AuditLogs", (string)null);
                 });
 
             modelBuilder.Entity("PracticalTwenty.Data.Models.User", b =>
@@ -146,7 +89,7 @@ namespace PracticalTwenty.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
                     b.HasData(
                         new

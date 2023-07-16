@@ -15,25 +15,39 @@ namespace PracticalTwenty.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        /// <summary>
+        /// Get all user list
+        /// </summary>
         public async Task<IActionResult> IndexAsync()
         {
             var users = await _unitOfWork.Users.GetAll();
             return View(users);
         }
 
+        /// <summary>
+        /// Get detailed information of specific user by Id
+        /// </summary>
+        /// <param name="id">User Id</param>
         [HttpGet]
         public async Task<IActionResult> View(int id)
         {
-            var users = await _unitOfWork.Users.GetById(id);
-            return View(users);
+            var user = await _unitOfWork.Users.GetById(id);
+            if (user is null) return NotFound();
+            return View(user);
         }
 
+        /// <summary>
+        /// Return form for create new user
+        /// </summary>
         [HttpGet]
-        public async Task<IActionResult> CreateAsync()
+        public IActionResult Create()
         {
             return View(new User());
         }
 
+        /// <summary>
+        /// Create new user
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> CreateAsync(User user)
         {
@@ -41,21 +55,27 @@ namespace PracticalTwenty.Controllers
             {
                 bool isInserted = await _unitOfWork.Users.Insert(user);
                 await _unitOfWork.CompleteAsync();
-                if (isInserted)
-                {
-                    return RedirectToAction("Index");
-                }
+                if (!isInserted) return BadRequest("User has not been inserted!");
+                return RedirectToAction("Index");
             }
             return View(user);
         }
 
+        /// <summary>
+        /// Return forms for update existing user
+        /// </summary>
+        /// <param name="id">User Id</param>
         [HttpGet]
         public async Task<IActionResult> EditAsync(int id)
         {
-            User user = await _unitOfWork.Users.GetById(id);
+            User? user = await _unitOfWork.Users.GetById(id);
+            if (user is null) return NotFound();
             return View(user);
         }
 
+        /// <summary>
+        /// Update existing user
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> EditAsync(User user)
         {
@@ -63,20 +83,26 @@ namespace PracticalTwenty.Controllers
 
             bool isUpdated = await _unitOfWork.Users.Update(user);
             await _unitOfWork.CompleteAsync();
-            if (isUpdated)
-            {
-                return RedirectToAction("Index");
-            }
-            return RedirectToAction("Error", "User");
+
+            if (!isUpdated) return BadRequest("User details has not been update.");
+            return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Delete user by id
+        /// </summary>
+        /// <param name="id">User Id</param>
         [HttpGet]
         public async Task<IActionResult> DeleteAsync(int id)
         {
+            User? user = await _unitOfWork.Users.GetById(id);
+            if (user is null) return NotFound();
+
             bool isDeleted = await _unitOfWork.Users.Delete(id);
             await _unitOfWork.CompleteAsync();
+
             if (isDeleted) return RedirectToAction("Index");
-            return RedirectToAction("Error", "User");
+            return BadRequest();
         }
     }
 }

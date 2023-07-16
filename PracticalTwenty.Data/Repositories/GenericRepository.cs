@@ -21,7 +21,7 @@ namespace PracticalTwenty.Data.Repositories
             return await dbSet.ToListAsync();
         }
 
-        public virtual async Task<T> GetById(int id)
+        public virtual async Task<T?> GetById(int id)
         {
             return await dbSet.FindAsync(id);
         }
@@ -40,7 +40,9 @@ namespace PracticalTwenty.Data.Repositories
 
         public virtual async Task<bool> Delete(int id)
         {
-            dbSet.Remove(await GetById(id));
+            T? res = await GetById(id);
+            if (res is null) return false;
+            dbSet.Remove(res);
             return true;
         }
     }

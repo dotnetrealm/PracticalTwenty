@@ -11,67 +11,40 @@ namespace PracticalTwenty.Data.Repositories
 
         public override async Task<IEnumerable<User>> GetAll()
         {
-            try
-            {
-                return await dbSet.ToListAsync();
-            }
-            catch (Exception)
-            {
-                return new List<User>();
-            }
+            return await dbSet.ToListAsync();
+
         }
 
-        public override async Task<User> GetById(int id)
+        public override async Task<User?> GetById(int id)
         {
             return await dbSet.FindAsync(id);
         }
 
         public override async Task<bool> Insert(User entity)
         {
-            try
-            {
-                await dbSet.AddAsync(entity);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            await dbSet.AddAsync(entity);
+            return true;
         }
 
         public override async Task<bool> Update(User entity)
         {
-            try
-            {
-                var existingUser = await dbSet.Where(u => u.Id == entity.Id).FirstOrDefaultAsync();
-                if (existingUser == null) return await Insert(entity);
+            var existingUser = await dbSet.Where(u => u.Id == entity.Id).FirstOrDefaultAsync();
+            if (existingUser == null) return await Insert(entity);
 
-                existingUser.Firstname = entity.Firstname;
-                existingUser.LastName = entity.LastName;
-                existingUser.Password = entity.Password;
-                existingUser.Email = entity.Email;
+            existingUser.Firstname = entity.Firstname;
+            existingUser.LastName = entity.LastName;
+            existingUser.Password = entity.Password;
+            existingUser.Email = entity.Email;
 
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            return true;
         }
 
         public async override Task<bool> Delete(int id)
         {
-            try
-            {
-                var exist = await dbSet.FirstOrDefaultAsync(u => u.Id == id);
-                if (exist == null) { return false; }
-                dbSet.Remove(exist);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            var exist = await dbSet.FirstOrDefaultAsync(u => u.Id == id);
+            if (exist == null) { return false; }
+            dbSet.Remove(exist);
+            return true;
         }
     }
 }

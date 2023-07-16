@@ -7,7 +7,6 @@ namespace PracticalTwenty.Data.DTO
 {
     public class AuditEntry
     {
-
         public Dictionary<string, object> KeyValues { get; } = new();
         public Dictionary<string, object> OldValues { get; } = new();
         public Dictionary<string, object> NewValues { get; } = new();

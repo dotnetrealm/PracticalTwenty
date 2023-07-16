@@ -3,14 +3,14 @@ using Microsoft.Extensions.Logging;
 using PracticalSeventeen.Data.Models;
 using PracticalTwenty.Data.DTO;
 using PracticalTwenty.Data.Models;
-using System.Text.Json;
 
 namespace PracticalTwenty.Data.Contexts
 {
     public class ApplicationDBContext : DbContext
     {
-        public ILogger<ApplicationDBContext> _logger; 
-        public ApplicationDBContext(DbContextOptions options, ILogger<ApplicationDBContext> logger) : base(options) {
+        public ILogger<ApplicationDBContext> _logger;
+        public ApplicationDBContext(DbContextOptions options, ILogger<ApplicationDBContext> logger) : base(options)
+        {
             _logger = logger;
         }
 
@@ -18,7 +18,6 @@ namespace PracticalTwenty.Data.Contexts
 
         public DbSet<Audit> AuditLogs { get; set; }
 
-        public DbSet<ApplicationLog> ApplicationLogs { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.SeedUsers();
@@ -46,35 +45,34 @@ namespace PracticalTwenty.Data.Contexts
                     string propertyName = property.Metadata.Name;
                     if (property.Metadata.IsPrimaryKey())
                     {
-                        auditEntry.KeyValues[propertyName] = property.CurrentValue;
+                        auditEntry.KeyValues[propertyName] = property.CurrentValue!;
                         continue;
                     }
                     switch (entry.State)
                     {
                         case EntityState.Added:
                             auditEntry.AuditType = Enums.AuditType.Create;
-                            auditEntry.NewValues[propertyName] = property.CurrentValue;
+                            auditEntry.NewValues[propertyName] = property.CurrentValue!;
                             break;
                         case EntityState.Deleted:
                             auditEntry.AuditType = Enums.AuditType.Delete;
-                            auditEntry.OldValues[propertyName] = property.OriginalValue;
+                            auditEntry.OldValues[propertyName] = property.OriginalValue!;
                             break;
                         case EntityState.Modified:
                             if (property.IsModified)
                             {
                                 auditEntry.ChangedColumns.Add(propertyName);
                                 auditEntry.AuditType = Enums.AuditType.Update;
-                                auditEntry.OldValues[propertyName] = property.OriginalValue;
-                                auditEntry.NewValues[propertyName] = property.CurrentValue;
+                                auditEntry.OldValues[propertyName] = property.OriginalValue!;
+                                auditEntry.NewValues[propertyName] = property.CurrentValue!;
                             }
                             break;
                     }
                 }
-                
+
             }
             foreach (var auditEntry in auditEntries)
             {
-                _logger.LogInformation(JsonSerializer.Serialize(auditEntry));
                 AuditLogs.Add(auditEntry.ToAudit());
             }
         }

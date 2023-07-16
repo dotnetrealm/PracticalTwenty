@@ -19,6 +19,9 @@ namespace PracticalTwenty.Data.Repositories
             await _db.SaveChangesAsync("Admin");
         }
 
+        /// <summary>
+        /// Dispose context of DB
+        /// </summary>
         public void Dispose()
         {
             _db.Dispose();
