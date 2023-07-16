@@ -3,6 +3,7 @@ using PracticalTwenty.Data.Contexts;
 using PracticalTwenty.Data.Interfaces;
 using PracticalTwenty.Data.Repositories;
 using Serilog;
+using Azure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
