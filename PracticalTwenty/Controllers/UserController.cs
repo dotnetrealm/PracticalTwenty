@@ -49,6 +49,7 @@ namespace PracticalTwenty.Controllers
         /// Create new user
         /// </summary>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateAsync(User user)
         {
             if (ModelState.IsValid)
@@ -66,6 +67,7 @@ namespace PracticalTwenty.Controllers
         /// </summary>
         /// <param name="id">User Id</param>
         [HttpGet]
+        
         public async Task<IActionResult> EditAsync(int id)
         {
             User? user = await _unitOfWork.Users.GetById(id);
@@ -77,6 +79,7 @@ namespace PracticalTwenty.Controllers
         /// Update existing user
         /// </summary>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditAsync(User user)
         {
             if (!ModelState.IsValid) return View(user);
